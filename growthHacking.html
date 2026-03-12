@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그로스 해킹 다이내믹스: 실리콘밸리 & 토스 방법론의 과학적 접근</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #fafaf9;
+            color: #292524;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .nav-link.active {
+            color: #0284c7;
+            border-bottom: 2px solid #0284c7;
+        }
+        .interactive-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .interactive-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .interactive-btn.active {
+            background-color: #f0f9ff;
+            border-color: #0ea5e9;
+            color: #0369a1;
+        }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <!-- Chosen Palette: Warm Neutrals & Calm Harmony (Stone 50 bg, Sky Blue 500 & Amber 400 accents) -->
+    <!-- Application Structure Plan: A dashboard-style single page application divided into four thematic pillars based on the source methodology. It uses a sticky navigation for easy access. Each section contains an interactive visualization (sliders to simulate capacity, toggles for funnel interventions) allowing the user to experience the mathematical and psychological principles firsthand, prioritizing active learning over passive reading. -->
+    <!-- Visualization & Content Choices: 
+         1. Carrying Capacity -> Goal: Change/Interact -> Viz: Line Chart (Chart.js) dynamically updating based on user input -> Justification: Shows asymptotes clearly. Library: Chart.js Canvas.
+         2. AHA Moment -> Goal: Compare -> Viz: Line/Area Chart -> Justification: Compares retention curves over time. Library: Chart.js Canvas.
+         3. Funnel Optimization -> Goal: Compare/Change -> Viz: Horizontal Bar Chart with toggles -> Justification: Clearly illustrates drop-off rates and intervention impact. Library: Chart.js Canvas.
+         4. Unit Economics -> Goal: Relationships -> Viz: Stacked Bar/Line Combo -> Justification: Shows absolute costs vs the ratio. Library: Chart.js Canvas.
+         ALL Confirming NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-stone-800 tracking-tight">Growth<span class="text-sky-600">Dynamics</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#intro" class="nav-link active text-sm font-semibold text-stone-500 hover:text-stone-900 px-1 py-5">도입부</a>
+                    <a href="#capacity" class="nav-link text-sm font-semibold text-stone-500 hover:text-stone-900 px-1 py-5">캐링 캐퍼시티</a>
+                    <a href="#aha" class="nav-link text-sm font-semibold text-stone-500 hover:text-stone-900 px-1 py-5">아하 모먼트</a>
+                    <a href="#funnel" class="nav-link text-sm font-semibold text-stone-500 hover:text-stone-900 px-1 py-5">퍼널과 마찰</a>
+                    <a href="#economics" class="nav-link text-sm font-semibold text-stone-500 hover:text-stone-900 px-1 py-5">유닛 이코노믹스</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24 pb-32">
+
+        <section id="intro" class="pt-8">
+            <div class="text-center max-w-3xl mx-auto space-y-6">
+                <div class="inline-flex items-center justify-center p-3 bg-sky-100 text-sky-700 rounded-full mb-2 text-sm font-bold tracking-wide uppercase">
+                    Interactive Report
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 leading-tight">
+                    실리콘밸리와 토스의<br>
+                    <span class="text-sky-600">그로스 해킹 과학</span>
+                </h1>
+                <p class="text-lg text-stone-600 leading-relaxed">
+                    본 문서는 유명 서비스 기획자(PO/PM)들의 통찰과 성공 사례를 바탕으로, 이를 <strong>인지심리학, 인구통계학, 행동경제학</strong>의 최신 학술적 근거와 결합하여 재구성한 인터랙티브 가이드입니다. 데이터를 직접 조작해보며 제품 성장(Growth)의 본질적 한계와 돌파구를 체득해보세요.
+                </p>
+            </div>
+        </section>
+
+        <section id="capacity" class="glass-card p-8 md:p-12 scroll-mt-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-stone-900 flex items-center gap-3">
+                    <span class="text-3xl">🌊</span> 캐링 캐퍼시티 (Carrying Capacity)
+                </h2>
+                <p class="mt-4 text-stone-600 text-lg">
+                    생태학 및 인구통계학에서 차용한 이 개념은, <strong>"제품이 도달할 수 있는 궁극적인 활성 사용자 수의 한계"</strong>를 의미합니다. 일일 신규 사용자(DNU)와 이탈률(Churn Rate)의 균형점에서 한계 수용 능력이 결정되며, 마케팅 비용만으로는 이 자연 법칙을 영구히 거스를 수 없습니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                <div class="lg:col-span-1 space-y-8">
+                    <div class="bg-stone-50 p-6 rounded-xl border border-stone-200">
+                        <h3 class="text-sm font-bold text-stone-500 uppercase mb-4">시뮬레이터</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="flex justify-between text-sm font-semibold text-stone-700 mb-2">
+                                    <span>일일 신규 유입 (DNU)</span>
+                                    <span id="dnuValue" class="text-sky-600">5,000 명</span>
+                                </label>
+                                <input type="range" id="dnuSlider" min="1000" max="20000" step="1000" value="5000" class="w-full accent-sky-500">
+                                <p class="text-xs text-stone-400 mt-1">마케팅 및 자연 유입량</p>
+                            </div>
+
+                            <div>
+                                <label class="flex justify-between text-sm font-semibold text-stone-700 mb-2">
+                                    <span>일일 이탈률 (Churn Rate)</span>
+                                    <span id="churnValue" class="text-sky-600">2.0 %</span>
+                                </label>
+                                <input type="range" id="churnSlider" min="0.5" max="10" step="0.5" value="2.0" class="w-full accent-sky-500">
+                                <p class="text-xs text-stone-400 mt-1">제품의 본질적 가치 부재로 인한 이탈</p>
+                            </div>
+
+                            <div class="pt-4 border-t border-stone-200">
+                                <p class="text-sm text-stone-500">예상 캐링 캐퍼시티 (Max Users)</p>
+                                <p id="ccResult" class="text-3xl font-extrabold text-stone-900 mt-1">250,000 명</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <div class="chart-container">
+                        <canvas id="capacityChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center text-stone-500 mt-4">X축: 시간(일) / Y축: 활성 사용자 수 (MAU/DAU)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="aha" class="glass-card p-8 md:p-12 scroll-mt-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-stone-900 flex items-center gap-3">
+                    <span class="text-3xl">💡</span> 아하 모먼트 (AHA Moment)와 인지심리학
+                </h2>
+                <p class="mt-4 text-stone-600 text-lg">
+                    초기 이탈률(Churn)을 극적으로 낮추는 유일한 방법은 사용자가 제품의 핵심 가치를 인지하는 <strong>'아하 모먼트'</strong>를 경험하게 하는 것입니다. 인지심리학적으로 이는 도파민 분비에 따른 <strong>조작적 조건형성(Operant Conditioning)</strong>이 이루어지는 순간이며, 이 경험 유무에 따라 장기 리텐션 커브가 완전히 분리됩니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="chart-container">
+                        <canvas id="ahaChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="p-5 bg-sky-50 border-l-4 border-sky-500 rounded-r-lg">
+                            <h4 class="font-bold text-stone-900 text-lg">AHA 경험 사용자 (Habitual Users)</h4>
+                            <p class="text-stone-600 text-sm mt-2">
+                                특정 행동(예: 가입 후 3일 내 5명 친구 추가)을 수행하여 심리적 보상을 얻은 코호트입니다. 망각 곡선을 극복하고 인지적 용이성(Cognitive Ease) 상태에 접어들어 리텐션이 60% 이상에서 평행을 이룹니다.
+                            </p>
+                        </div>
+                        <div class="p-5 bg-stone-100 border-l-4 border-stone-400 rounded-r-lg">
+                            <h4 class="font-bold text-stone-900 text-lg">미경험 사용자 (Churned Users)</h4>
+                            <p class="text-stone-600 text-sm mt-2">
+                                가치를 느끼기 전 인지적 과부하(Cognitive Overload)를 겪고 이탈한 코호트입니다. 알림(Push) 등 외부 자극으로 일시적 복귀는 가능하나 점진적으로 0%에 수렴합니다.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-4 border border-amber-200 rounded-lg text-sm text-amber-800">
+                        <strong>데이터 시사점:</strong> 서비스 기획의 최우선 과제는 기능 추가가 아니라, 미경험 사용자를 AHA 코호트로 이동시키는 가장 빠른 경로를 찾는 것입니다.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="funnel" class="glass-card p-8 md:p-12 scroll-mt-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-stone-900 flex items-center gap-3">
+                    <span class="text-3xl">📉</span> 퍼널 최적화와 행동경제학
+                </h2>
+                <p class="mt-4 text-stone-600 text-lg">
+                    사용자가 AHA 모먼트로 가는 길목에는 마찰(Friction)이 존재합니다. 행동경제학의 <strong>힉스의 법칙(Hick's Law)</strong>과 <strong>선택 피로(Decision Fatigue)</strong>에 따르면, 화면 내의 선택지나 단계가 늘어날수록 이탈 확률은 기하급수적으로 증가합니다. 넛지(Nudge)를 활용한 설계 최적화가 필요합니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 space-y-4">
+                    <h3 class="text-sm font-bold text-stone-500 uppercase">개입(Intervention) 시뮬레이션</h3>
+                    <button id="btnBase" class="interactive-btn active w-full text-left px-5 py-4 border rounded-xl font-semibold flex justify-between items-center">
+                        <span>기존 퍼널 (Basic)</span>
+                        <span class="text-xs bg-stone-200 text-stone-600 px-2 py-1 rounded">2.4% 전환</span>
+                    </button>
+                    <button id="btnIntervention1" class="interactive-btn w-full text-left px-5 py-4 border border-stone-200 rounded-xl font-semibold flex justify-between items-center bg-white text-stone-600">
+                        <span>소셜 로그인 도입</span>
+                        <span class="text-xs bg-sky-100 text-sky-600 px-2 py-1 rounded">가입 마찰 제거</span>
+                    </button>
+                    <button id="btnIntervention2" class="interactive-btn w-full text-left px-5 py-4 border border-stone-200 rounded-xl font-semibold flex justify-between items-center bg-white text-stone-600">
+                        <span>가치 선제공 (Nudge)</span>
+                        <span class="text-xs bg-amber-100 text-amber-600 px-2 py-1 rounded">결제 단계 후순위</span>
+                    </button>
+                </div>
+                <div class="lg:col-span-2">
+                    <div class="chart-container h-[400px]">
+                        <canvas id="funnelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="economics" class="glass-card p-8 md:p-12 scroll-mt-20">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-stone-900 flex items-center gap-3">
+                    <span class="text-3xl">⚖️</span> 유닛 이코노믹스와 네트워크 효과
+                </h2>
+                <p class="mt-4 text-stone-600 text-lg">
+                    서비스가 성장하여 후기 다수용자(Late Majority) 시장에 진입하면 필연적으로 <strong>고객 획득 비용(CAC)</strong>이 상승합니다. 이를 극복하고 생존하려면 고객 생애 가치(LTV)를 높여야 하며, 이를 가능케 하는 가장 강력한 사회과학적 기제는 <strong>네트워크 효과(Network Effects)</strong>입니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="chart-container">
+                        <canvas id="economicsChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                        <div class="flex items-end justify-between mb-2">
+                            <h4 class="font-bold text-stone-700">LTV / CAC 비율</h4>
+                            <span class="text-2xl font-extrabold text-sky-600">목표 3.0x 이상</span>
+                        </div>
+                        <div class="w-full bg-stone-100 rounded-full h-2">
+                            <div class="bg-sky-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <p class="text-sm text-stone-500 mt-3">LTV가 CAC의 3배 이상일 때 벤처캐피탈(VC)이 투자하는 건전한 스케일업(Scale-up) 단계로 평가받습니다.</p>
+                    </div>
+
+                    <p class="text-stone-600 leading-relaxed">
+                        사용자가 늘어날수록 사용자 간의 상호작용 밀도가 높아져 제품 가치가 기하급수적으로 상승합니다(메트칼프의 법칙). 이는 자연 바이럴을 유도하여 평균 CAC를 낮추고, 락인(Lock-in) 효과를 통해 이탈률을 낮춰 결과적으로 LTV를 극대화합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 py-12 text-center border-t border-stone-800">
+        <p class="text-stone-400 font-semibold mb-2">Growth Dynamics Framework &copy; 2026</p>
+        <p class="text-sm text-stone-500">Based on PO/PM methodologies, Cognitive Psychology, and Behavioral Economics.</p>
+    </footer>
+
+    <script>
+        const tooltipCb = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const globalFontOptions = {
+            family: "'Pretendard', sans-serif",
+            color: '#57534e'
+        };
+
+        const generateCapacityData = (dnu, churnRate) => {
+            const days = 100;
+            const churn = churnRate / 100;
+            const data = [];
+            let currentUsers = 0;
+            for (let i = 0; i <= days; i++) {
+                data.push(currentUsers);
+                currentUsers = currentUsers + dnu - (currentUsers * churn);
+            }
+            const limit = dnu / churn;
+            return { data, limit, labels: Array.from({length: days+1}, (_, i) => i) };
+        };
+
+        const ctxCap = document.getElementById('capacityChart').getContext('2d');
+        let capDnu = 5000;
+        let capChurn = 2.0;
+        let capInitData = generateCapacityData(capDnu, capChurn);
+
+        const capacityChart = new Chart(ctxCap, {
+            type: 'line',
+            data: {
+                labels: capInitData.labels,
+                datasets: [
+                    {
+                        label: '활성 사용자 성장 곡선',
+                        data: capInitData.data,
+                        borderColor: '#0ea5e9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    },
+                    {
+                        label: '캐링 캐퍼시티 (한계치)',
+                        data: Array(101).fill(capInitData.limit),
+                        borderColor: '#f59e0b',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipCb,
+                    legend: { labels: { font: globalFontOptions } }
+                },
+                scales: {
+                    x: {
+                        ticks: { font: globalFontOptions, callback: val => val + '일' },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { font: globalFontOptions, callback: val => (val/10000).toFixed(0) + '만' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                }
+            }
+        });
+
+        const updateCapacityChart = () => {
+            const dnu = parseInt(document.getElementById('dnuSlider').value);
+            const churn = parseFloat(document.getElementById('churnSlider').value);
+            
+            document.getElementById('dnuValue').textContent = dnu.toLocaleString() + ' 명';
+            document.getElementById('churnValue').textContent = churn.toFixed(1) + ' %';
+            
+            const newData = generateCapacityData(dnu, churn);
+            
+            document.getElementById('ccResult').textContent = Math.round(newData.limit).toLocaleString() + ' 명';
+
+            capacityChart.data.datasets[0].data = newData.data;
+            capacityChart.data.datasets[1].data = Array(101).fill(newData.limit);
+            capacityChart.update();
+        };
+
+        document.getElementById('dnuSlider').addEventListener('input', updateCapacityChart);
+        document.getElementById('churnSlider').addEventListener('input', updateCapacityChart);
+
+
+        const ctxAha = document.getElementById('ahaChart').getContext('2d');
+        new Chart(ctxAha, {
+            type: 'line',
+            data: {
+                labels: ['가입(D0)', 'D+1', 'D+3', 'D+7', 'D+14', 'D+30', 'D+90'],
+                datasets: [
+                    {
+                        label: 'AHA 경험 코호트',
+                        data: [100, 90, 85, 80, 75, 70, 68],
+                        borderColor: '#0284c7',
+                        backgroundColor: 'rgba(2, 132, 199, 0.15)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'AHA 미경험 코호트',
+                        data: [100, 40, 25, 15, 8, 3, 1],
+                        borderColor: '#a8a29e',
+                        backgroundColor: 'rgba(168, 162, 158, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipCb,
+                    legend: { labels: { font: globalFontOptions } }
+                },
+                scales: {
+                    x: { ticks: { font: globalFontOptions }, grid: { display: false } },
+                    y: { 
+                        beginAtZero: true, max: 100, 
+                        ticks: { font: globalFontOptions, callback: val => val + '%' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    }
+                }
+            }
+        });
+
+
+        const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+        const funnelLabels = [
+            ['앱 다운로드', '및 실행'],
+            ['회원가입', '정보 입력'],
+            ['이메일 및', '본인 인증'],
+            ['온보딩 튜토리얼', '완료'],
+            ['첫 핵심 기능', '사용 (AHA)']
+        ];
+        
+        const funnelDataSets = {
+            base: [100, 60, 30, 15, 5],
+            int1: [100, 85, 45, 20, 8],
+            int2: [100, 90, 80, 60, 35]
+        };
+
+        const funnelChart = new Chart(ctxFunnel, {
+            type: 'bar',
+            data: {
+                labels: funnelLabels,
+                datasets: [{
+                    label: '생존 유저 비율 (%)',
+                    data: funnelDataSets.base,
+                    backgroundColor: ['#0ea5e9', '#38bdf8', '#7dd3fc', '#bae6fd', '#e0f2fe'],
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipCb,
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true, max: 100,
+                        ticks: { font: globalFontOptions, callback: val => val + '%' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    y: {
+                        ticks: { font: globalFontOptions, font: { weight: 'bold' } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        const updateFunnel = (key, btnId) => {
+            funnelChart.data.datasets[0].data = funnelDataSets[key];
+            
+            if(key === 'base') funnelChart.data.datasets[0].backgroundColor = ['#0ea5e9', '#38bdf8', '#7dd3fc', '#bae6fd', '#e0f2fe'];
+            if(key === 'int1') funnelChart.data.datasets[0].backgroundColor = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#ddd6fe', '#ede9fe'];
+            if(key === 'int2') funnelChart.data.datasets[0].backgroundColor = ['#f59e0b', '#fbbf24', '#fcd34d', '#fde68a', '#fef3c7'];
+
+            funnelChart.update();
+
+            document.querySelectorAll('.interactive-btn').forEach(b => {
+                b.classList.remove('active', 'bg-f0f9ff', 'border-0ea5e9', 'text-0369a1');
+                b.classList.add('bg-white', 'text-stone-600');
+            });
+            const activeBtn = document.getElementById(btnId);
+            activeBtn.classList.remove('bg-white', 'text-stone-600');
+            activeBtn.classList.add('active');
+            activeBtn.style.backgroundColor = '#f0f9ff';
+            activeBtn.style.borderColor = '#0ea5e9';
+            activeBtn.style.color = '#0369a1';
+        };
+
+        document.getElementById('btnBase').addEventListener('click', () => updateFunnel('base', 'btnBase'));
+        document.getElementById('btnIntervention1').addEventListener('click', () => updateFunnel('int1', 'btnIntervention1'));
+        document.getElementById('btnIntervention2').addEventListener('click', () => updateFunnel('int2', 'btnIntervention2'));
+
+
+        const ctxEcon = document.getElementById('economicsChart').getContext('2d');
+        new Chart(ctxEcon, {
+            type: 'bar',
+            data: {
+                labels: [
+                    ['초기 시장', '(Innovators)'],
+                    ['얼리어답터', '(Early Adopters)'],
+                    ['전기 다수용자', '(Early Majority)'],
+                    ['후기 다수용자', '(Late Majority)']
+                ],
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'LTV / CAC 비율',
+                        data: [4.5, 4.0, 3.2, 1.8],
+                        borderColor: '#f59e0b',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#f59e0b',
+                        pointRadius: 6,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        type: 'bar',
+                        label: '유저당 생애가치 (LTV)',
+                        data: [90000, 100000, 112000, 105000],
+                        backgroundColor: '#0284c7',
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'bar',
+                        label: '고객 획득 비용 (CAC)',
+                        data: [20000, 25000, 35000, 58000],
+                        backgroundColor: '#e2e8f0',
+                        borderRadius: 4,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: tooltipCb,
+                    legend: { labels: { font: globalFontOptions } }
+                },
+                scales: {
+                    x: {
+                        ticks: { font: globalFontOptions },
+                        grid: { display: false }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        ticks: { font: globalFontOptions, callback: val => (val/10000) + '만 ₩' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        ticks: { font: globalFontOptions, callback: val => val + 'x' },
+                        min: 0,
+                        max: 6
+                    }
+                }
+            }
+        });
+
+        // Scroll Spy Logic for Sticky Nav
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
